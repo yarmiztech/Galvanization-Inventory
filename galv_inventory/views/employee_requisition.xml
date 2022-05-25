@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+     <record id="product_report_inherit" model="ir.ui.view">
+        <field name="name">product.reports.inherit</field>
+        <field name="model">product.reports</field>
+        <field name="inherit_id" ref="galvanization_inventory.product_report"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='connection']/tree//field[@name='product']" position="after">
+                <field name="category_inventory"/>
+            </xpath>
+        </field>
+    </record>
+      <record id="product_product_view_form_galv" model="ir.ui.view">
+        <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="before">
+                   <field name="inventory_categ"/>
+            </xpath>
+            </field>
+      </record>
+    <record id="employee_requisition" model="ir.ui.view">
+        <field name="name">Employee Requisition</field>
+        <field name="model">employee.requisition</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <header>
+                    <button name="pass_values" type="object" string="Issue Form" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,form_issued"/>
+                </header>
+                <sheet>
+
+                   <div class="oe_button_box" name="button_box">
+                        <button name="view_issue_form"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                type="object"
+                                attrs="{'invisible': [('issue_ids', '=', False)]}">
+
+                        </button>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="issue_ids" invisible="1"/>
+                            <field name="date"/>
+                            <field name="employee"/>
+
+                        </group>
+                        <group>
+                            <field name="department"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product details">
+                            <field name="employee_conn">
+                                <tree editable="bottom">
+                                    <field name="product"/>
+                                    <field name="uom"/>
+                                    <field name="p_value"/>
+                                    <field name="available_qty"/>
+                                    <field name="requested_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="employee_requisition_tree" model="ir.ui.view">
+        <field name="name">Employee Requisition</field>
+        <field name="model">employee.requisition</field>
+        <field name="arch" type="xml">
+            <tree string="Product Reports Tree">
+                <field name="date"/>
+                <field name="employee"/>
+            </tree>
+        </field>
+    </record>
+    <record id="inventory_category_tree" model="ir.ui.view">
+        <field name="name">Inventory Category</field>
+        <field name="model">inventory.category</field>
+        <field name="arch" type="xml">
+            <tree string="Inventory Tree" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="employee_requisition_action" model="ir.actions.act_window">
+        <field name="name">Employee Requisition</field>
+        <field name="res_model">employee.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">No records found</p>
+        </field>
+    </record>
+    <record id="inv_category_action" model="ir.actions.act_window">
+        <field name="name">Inventory Category</field>
+        <field name="res_model">inventory.category</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">No records found</p>
+        </field>
+    </record>
+    <menuitem name="Galvanization Inventory" id="galv_inventory"/>
+        <menuitem name="Configuration" id="gal_config" parent="galv_inventory" sequence="3"/>
+        <menuitem name="Inventory Category" id="gal_confi_inventory" parent="gal_config" sequence="1" action="inv_category_action"/>
+
+    <menuitem name="Requisition" id="galv_req" parent="galv_inventory" sequence="2"/>
+    <menuitem name="Employee Requisition" id="employee_requisition_id" action="employee_requisition_action"
+              parent="galv_req"/>
+    <menuitem name="Purchase Order" id="purchase_order_id_my" parent="galv_req" action="purchase.purchase_rfq" sequence="1"/>
+</odoo>

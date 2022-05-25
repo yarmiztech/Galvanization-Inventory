@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="issue_form" model="ir.ui.view">
+        <field name="name">Issue Form</field>
+        <field name="model">issue.form</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <header>
+                    <button name="validate" type="object" string="Validate" class="oe_highlight" states="draft"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,validate,cancelled"/>
+
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="issued_to"/>
+                            <field name="address"/>
+                            <field name="issue_ticket_no"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="issue_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product details">
+                            <field name="connection">
+                                <tree editable="bottom">
+                                    <field name="product"/>
+                                    <field name="product_code"/>
+                                    <field name="unit"/>
+                                    <field name="purchase_value"/>
+                                    <field name="quantity"/>
+                                    <field name="amount"/>
+                                    <field name="remarks"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group>
+                        <field name="net_total"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="issue_form_tree" model="ir.ui.view">
+        <field name="name">Issue Form tree</field>
+        <field name="model">issue.form</field>
+        <field name="arch" type="xml">
+            <tree string="Issue Form Tree">
+                <field name="issued_to"/>
+                <field name="address"/>
+                <field name="issue_ticket_no"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="issue_date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="issue_action" model="ir.actions.act_window">
+        <field name="name">Issue Form</field>
+        <field name="res_model">issue.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create"> No records found </p>
+        </field>
+    </record>
+    <menuitem name="Issue Form" id="details" parent="galv_req" action="issue_action" />
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_category,inventory.category,model_inventory_category,,1,1,1,1
+access_issue_form,issue.form,model_issue_form,,1,1,1,1
+access_issue_form_line,issue.form.line,model_issue_form_line,,1,1,1,1
+access_issue_product_report,product.report,model_product_report,,1,1,1,1
+access_department_requisition,department.requisition,model_department_requisition,,1,1,1,1
+access_employee_requisition,employee.requisition,model_employee_requisition,,1,1,1,1
+access_employee_requisition_line,employee.requisition.line,model_employee_requisition_line,,1,1,1,1
+access_product_report_line,product.report.line,model_product_report_line,,1,1,1,1

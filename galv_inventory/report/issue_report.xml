@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="test_report_header_layout">
+        <t t-call="web.html_container">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!--  Multicompany  -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <div class="header" t-att-style="report_header_style">
+                <div class="row">
+                    <div class="col-3">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height:100px;width:225px;" alt="Logo"/>
+                    </div>
+                    <div class="col-9">
+                        <table>
+                            <tr>
+                                <td style="text-align:center">
+                                    <h2><b><t t-esc="company.partner_id.name"/></b></h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">
+                                    <t t-esc="company.partner_id.street"/>,<t t-esc="company.partner_id.city"/>,<t t-esc="company.partner_id.street2"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">
+                                    Tel.:<t t-esc="company.partner_id.phone"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">
+                                    E-mail:<t t-esc="company.partner_id.email"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.testing(), 100, 100)" style="width:100px;height:100px"/>-->
+
+                    </div>
+<!--                    <div class="col-6" align="right">-->
+<!--                        &lt;!&ndash;    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.testing(), 100, 100)" style="width:100px;height:100px"/>&ndash;&gt;-->
+
+
+<!--                    </div>-->
+                </div>
+            </div>
+            <div class="col-9 text-right" t-field="company.report_header" name="moto">
+                <div t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+            </div>
+            <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+            </div>
+
+            <div class="footer o_background_footer">
+
+                <div>
+
+
+                    <div t-field="company.report_footer"/>
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        <!--    <table style="width:100%        ">-->
+                        <!--                        <tr>-->
+                        <!--                            <td colspan="1" style="border:1px solid black;width:100px"><center><b>Approved By</b></center></td>-->
+                        <!--                            <td colspan="1" style="border:1px solid black;width:100px"><center><b>Received By</b></center></td>-->
+                        <!--                            <td colspan="1" style="border:1px solid black;width:100px"><center><b>Date</b></center></td>-->
+                        <!--                            <td colspan="1" style="border:1px solid black;width:100px"><center><b>Signature</b></center></td>-->
+                        <!--                        </tr>-->
+                        <!--                    </table>-->
+<!--                        <div>-->
+<!--                            <table style="border:1px solid black;width:100%;">-->
+<!--                                <tr>-->
+<!--                                    <td style="border:1px solid black;text-align:center;color:black">Approved By</td>-->
+<!--                                    <td style="border:1px solid black;text-align:center;color:black">Received By</td>-->
+<!--                                    <td style="border:1px solid black;text-align:center;color:black">Date</td>-->
+<!--                                    <td style="border:1px solid black;text-align:center;color:black">Signature</td>-->
+<!--                                </tr>-->
+<!--                            </table>-->
+<!--                        </div>-->
+                        <hr style="width:100%;" color="gray"/>
+                        <div class="row">
+                            <div class="col-12">
+                                <p style="font-size:small">ENZAPPS-CR.878787878878-Floor no:UO2,Neospace,Kinfra Techno Industrial Park,Saudi Arabia-21321321321-ENZAPPS</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="text-align:right;">
+                                <span style="color:gray;"> Powered by Enzapps</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="galv_inventory.pur_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="galv_inventory.test_report_header_layout">
+                    <div class="page">
+                        <strong>
+                            <center>Issue Report<br/> From &amp;nbsp;
+                                <t t-esc="o.from_date" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/> &amp;nbsp; To &amp;nbsp;
+                                <t t-esc="o.to_date" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
+                            </center>
+                        </strong><br/>
+                        <table style="border:1px solid black;width:100%">
+                            <tr style="text-align:center;">
+                                <th style="border:1px solid black;">SI.N</th>
+                                <th style="border:1px solid black;">Product</th>
+                                <th style="border:1px solid black;">Quantity</th>
+                                <th style="border:1px solid black;">Unit</th>
+                                <th style="border:1px solid black;">Amount</th>
+                            </tr>
+                            <t t-set="i" t-value="1"/>
+<!--                            <t t-foreach="o.pr_conn.mapped('category')" t-as="cat">-->
+                            <t t-foreach="o.pr_conn.mapped('category_inventory')" t-as="cat">
+                                <tr style="text-align:left;">
+                                    <td colspan="5" style="border:1px solid black;text-align:left;padding-left:5px">
+                                        <b><t t-esc="cat.name"/></b>
+                                    </td>
+                                </tr>
+
+                                <t t-foreach="o.pr_conn" t-as="m">
+                                    <t t-if="m.product.inventory_categ==cat">
+                                        <tr style="text-align:center;">
+                                            <td style="border:1px solid black;"><t t-esc="i"/></td>
+                                            <td style="border:1px solid black;text-align:left;padding-left:5px"><t t-esc="m.product.name"/></td>
+                                            <td style="border:1px solid black;text-align:right;padding-right:5px"><t t-esc="m.quantity"/></td>
+                                            <td style="border:1px solid black;text-align:center"><t t-esc="m.unit"/> </td>
+                                            <td style="border:1px solid black;text-align:right;padding-right:5px"><t t-esc="('%.2f'%(m.amount))"/> </td>
+                                        </tr>
+                                    <t t-set="i" t-value="i+1"/>
+                                    </t>
+                                </t>
+                                <tr>
+                                    <td colspan="4" style="text-align:left;padding-left:5px"><b>Total</b></td>
+                                    <td style="text-align:right;padding-right:5px" colspan="1">
+                                        <b><t t-esc="('%.2f'%(sum(o.pr_conn.filtered(lambda a:a.category_inventory ==cat).mapped('amount'))))"/></b>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr style="text-align:center;">
+                                <td style="border:1px solid black;text-align:right;padding-right:5px" colspan="4"><strong>Net Total</strong></td>
+                                <td style="border:1px solid black;text-align:right;padding-right:5px" colspan="1"><strong><t t-esc="('%.2f'%(o.total))"/></strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
